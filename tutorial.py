@@ -21,3 +21,5 @@ while run:
     game.loop()
     game.draw()
     pygame.display.update()
+
+print('hello')
