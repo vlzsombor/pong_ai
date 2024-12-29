@@ -1,0 +1,33 @@
+[NEAT]
+    #Once the genom has fitness_threshold (400) genom it stops
+    #mean -> once the average is 400 then it stops
+    #min -> minimum of the genomes is 400 then it stops
+fitness_criterion     = max 
+fitness_threshold     = 400 #
+    # poulation size, increase will exponentially increase how long it takes to run
+pop_size              = 50
+reset_on_extinction   = False
+
+[...]
+
+# connection enable options
+enabled_default         = True
+enabled_mutate_rate     = 0.01
+    # with false it is a reoccuring network (?)
+    # save the history of the NN (?)
+feed_forward            = True
+    # NN each node is connected to every other node in the next layer
+initial_connection      = full_direct
+
+# node add/remove rates
+node_add_prob           = 0.2
+node_delete_prob        = 0.2
+
+# network parameters
+    # default hidden layer number
+num_hidden              = 2
+num_inputs              = 3
+num_outputs             = 3
+
+
+[...]
