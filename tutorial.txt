@@ -79,10 +79,10 @@ class PongGame:
             else:
                 self.game.move_paddle(left=False, up=False)
 
-            game_info = game.loop()
-
-            game.draw(draw_score=False, draw_hits=True)
-            pygame.display.update()
+            game_info = self.game.loop()
+            
+            #self.game.draw(draw_score=False, draw_hits=True)
+            #pygame.display.update()
 
             if game_info.left_score >= 1 or game_info.right_score >= 1 or game_info.left_hits > 50:
                 self.calculate_fitness(genome1, genome2, game_info)
@@ -108,14 +108,14 @@ def eval_genomes(genomes, config):
 
 
 def run_neat(config):
-    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-7')
+    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-0')
     #p = neat.Population(config)
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
     p.add_reporter(neat.Checkpointer(1))
 
-    winner = p.run(eval_genomes, 1)
+    winner = p.run(eval_genomes, 50)
     with open("best.pickle", "wb") as f:
         pickle.dump(winner, f)
 
@@ -138,5 +138,5 @@ if __name__ == "__main__":
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                          neat.DefaultSpeciesSet, neat.DefaultStagnation,
                          config_path)
-    # run_neat(config)
+    #run_neat(config)
     test_ai(config)

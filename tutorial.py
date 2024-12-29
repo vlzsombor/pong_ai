@@ -5,7 +5,7 @@ import neat
 import pickle
 
 
-width, height = 600, 400
+width, height = 700, 500
 window = pygame.display.set_mode((width, height))
 
 
@@ -116,14 +116,14 @@ def eval_genomes(genomes, config):
 
 
 def run_neat(config):
-    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-16')
-    # p = neat.Population(config)
+    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-4')
+    #p = neat.Population(config)
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
     p.add_reporter(neat.Checkpointer(1))
 
-    winner = p.run(eval_genomes, 1)
+    winner = p.run(eval_genomes, 15)
     with open('best.pickle', 'wb') as f:
         pickle.dump(winner, f)
 
