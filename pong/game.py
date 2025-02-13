@@ -31,9 +31,9 @@ class Game:
         self.window_height = window_height
 
         self.left_paddle = Paddle(
-            10, self.window_height // 2 - Paddle.HEIGHT // 2)
+            10, (self.window_height // 2 - Paddle.HEIGHT // 2) )
         self.right_paddle = Paddle(
-            self.window_width - 10 - Paddle.WIDTH, self.window_height // 2 - Paddle.HEIGHT//2)
+            self.window_width - 10 - Paddle.WIDTH, (self.window_height // 2 - Paddle.HEIGHT//2))
         self.ball = Ball(self.window_width // 2, self.window_height // 2)
 
         self.left_score = 0
@@ -155,6 +155,9 @@ class Game:
             self.ball.reset()
             self.left_score += 1
 
+        if self.right_score + self.left_score > 15:
+            print('lol')
+        
         game_info = GameInformation(
             self.left_hits, self.right_hits, self.left_score, self.right_score)
 
