@@ -22,9 +22,11 @@ class Game:
     .reset().
     """
     SCORE_FONT = pygame.font.SysFont("comicsans", 50)
+    TEXT_FONT = pygame.font.SysFont("comicsans", 30)
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
     RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
 
     def __init__(self, window, window_width, window_height):
         self.window_width = window_width
@@ -64,6 +66,25 @@ class Game:
                 continue
             pygame.draw.rect(
                 self.window, self.WHITE, (self.window_width//2 - 5, i, 10, self.window_height//20))
+            
+    def _draw_divider_additional_text(self):
+        text1 = self.TEXT_FONT.render(
+            "Neat implemented", 1, self.GREEN)
+        text2 = self.TEXT_FONT.render(
+            "from scratch", 1, self.GREEN)
+        self.window.blit(text1, (50, 75))
+        self.window.blit(text2, (50, 110))
+        
+        text1 = self.TEXT_FONT.render(
+            "Using neat-python", 1, self.GREEN)
+        text2 = self.TEXT_FONT.render(
+            "package", 1, self.GREEN)
+        self.window.blit(text1, (50+325, 75))
+        self.window.blit(text2, (50+325, 110))
+
+
+
+
 
     def _handle_collision(self):
         ball = self.ball
@@ -103,6 +124,7 @@ class Game:
         self.window.fill(self.BLACK)
 
         self._draw_divider()
+        self._draw_divider_additional_text()
 
         if draw_score:
             self._draw_score()

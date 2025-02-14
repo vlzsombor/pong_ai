@@ -1,8 +1,13 @@
 import pygame
+from neatXD.geneHistory import GeneHistory
+from neatXD.genome import Genome
 from pong import Game
 import os
 import neat
 import pickle
+
+from population import PongPlayer
+import tutorialOwnNeat
 
 
 width, height = 700, 500
@@ -15,6 +20,60 @@ class PongGame:
         self.left_paddle = self.game.left_paddle
         self.right_paddle = self.game.right_paddle
         self.ball = self.game.ball
+        self.gh = GeneHistory(3, 3)
+
+
+
+    def test_ai_against_ai(self, genome, config):
+        net = neat.nn.FeedForwardNetwork.create(genome, config)
+        run = True
+
+        clock = pygame.time.Clock()
+
+        # My NEAT:
+        with open(tutorialOwnNeat.filename, "rb") as file:
+            genome: Genome = pickle.load(file)
+
+        p = PongPlayer(self.gh, clone=True, brain = genome)
+
+
+        while run:
+            clock.tick(60)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                    break
+            keys = pygame.key.get_pressed()
+
+            output = p.think([self.left_paddle.y, self.ball.y, abs(self.left_paddle.x - self.ball.x)])
+            # $$$ outputs List[int] 3 elements, 
+            decision = output.index(max(output))
+            # $$$ 0== do nothing
+            if decision == 0:
+                pass
+            # $$$ 1 == up
+            elif decision == 1:
+                self.game.move_paddle(left=True, up=True)
+            # $$$ 1 == down
+            else:
+                self.game.move_paddle(left=True, up=False)
+
+
+            output = net.activate((self.right_paddle.y, self.ball.y, abs(self.right_paddle.x - self.ball.x)))
+            decision = output.index(max(output))
+            
+            if decision == 0:
+                pass
+            elif decision == 1:
+                self.game.move_paddle(left=False, up=True)
+            else:
+                self.game.move_paddle(left=False, up=False)
+
+
+            game_info = self.game.loop()
+            print(game_info.left_score, game_info.right_score)
+            self.game.draw(True, False)
+            pygame.display.update()        
 
     def test_ai(self, genome, config):
         net = neat.nn.FeedForwardNetwork.create(genome, config)
@@ -132,7 +191,8 @@ def test_ai(config):
         winner = pickle.load(f)
 
     game = PongGame(window, width, height)
-    game.test_ai(winner, config)
+    # game.test_ai(winner, config)
+    game.test_ai_against_ai(winner, config)
 #game = PongGame(window, width, height)
 #game.test_ai()
 

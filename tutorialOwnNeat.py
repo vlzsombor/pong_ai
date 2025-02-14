@@ -27,13 +27,9 @@ class PongGame:
         with open(filename, "rb") as file:
             genome: Genome = pickle.load(file)
 
-
         p = PongPlayer(self.gh, clone=True, brain = genome)
-
         run = True
-
         clock = pygame.time.Clock()
-
 
         while run:
             clock.tick(60)
@@ -44,12 +40,12 @@ class PongGame:
             keys = pygame.key.get_pressed()
 
             if keys[pygame.K_w]:
-                self.game.move_paddle(left=True, up = True)
+                self.game.move_paddle(left=False, up = True)
             if keys[pygame.K_s]:
-                self.game.move_paddle(left=True, up = False)
+                self.game.move_paddle(left=False, up = False)
 
             # $$$ inputs, List[int] 3 elements
-            output = p.think([self.right_paddle.y, self.ball.y, abs(self.right_paddle.x - self.ball.x)])
+            output = p.think([self.left_paddle.y, self.ball.y, abs(self.left_paddle.x - self.ball.x)])
             # $$$ outputs List[int] 3 elements, 
             decision = output.index(max(output))
             # $$$ 0== do nothing
@@ -57,10 +53,10 @@ class PongGame:
                 pass
             # $$$ 1 == up
             elif decision == 1:
-                self.game.move_paddle(left=False, up=True)
+                self.game.move_paddle(left=True, up=True)
             # $$$ 1 == down
             else:
-                self.game.move_paddle(left=False, up=False)
+                self.game.move_paddle(left=True, up=False)
 
             ############ left paddle
 
